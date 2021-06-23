@@ -4,17 +4,22 @@ from rest_framework.response import Response
 from .models import Todo
 from .serializers import TodoSerializer
 from rest_framework import viewsets,permissions
+import urllib.parse
 
 
 def home(req):
     return HttpResponse("HOME")
 def delete(req,slug):
-    if(Todo.objects.filter(title=slug)):
+    print(urllib.parse.unquote(slug))
+    if(Todo.objects.filter(title=urllib.parse.unquote(slug))):
+        print(urllib.parse.unquote(slug))
         pass
     else:
+        print(urllib.parse.unquote(slug))
         return JsonResponse({"status":"unable to delete"})
     try:
-        Todo.objects.filter(title=slug).delete()
+        print(urllib.parse.unquote(slug))
+        Todo.objects.filter(title=urllib.parse.unquote(slug)).delete()
         return JsonResponse({"status":"deleted"})
     except:
         pass
