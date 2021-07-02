@@ -10,7 +10,7 @@ import urllib.parse
 def home(req):
     return HttpResponse("HOME")
 def delete(req,slug):
-    print(urllib.parse.unquote(slug))
+    print(urllib.parse.unquote(slug)    )
     if(Todo.objects.filter(title=urllib.parse.unquote(slug))):
         print(urllib.parse.unquote(slug))
         pass
