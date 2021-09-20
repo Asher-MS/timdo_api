@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse,JsonResponse
 from rest_framework.response import Response
-from .models import Todo
-from .serializers import TodoSerializer
+from .models import Todo,Notes
+from .serializers import TodoSerializer,NoteSerializer
 from rest_framework import viewsets,permissions
 import urllib.parse
 
@@ -37,3 +37,35 @@ todo_list=TodoViewSet.as_view({
     'post':'create'
 })
 
+
+class NoteViewSet(viewsets.ModelViewSet):
+    queryset=Notes.objects.all()
+    serializer_class=NoteSerializer
+    permissions_classes=[permissions.AllowAny]
+
+
+note_list=NoteViewSet.as_view({
+    'get':'list',
+    'post':'create'
+})
+
+class UserNoteViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        email=self.request.query_params.get('email')
+        print(email)
+        try:
+            queryset=Notes.objects.filter(email=email)
+        except:
+            pass
+        return queryset
+    serializer_class=NoteSerializer
+    permissions_classes=[permissions.AllowAny]
+    
+
+user_note_list=UserNoteViewSet.as_view({
+    'get':'list',
+    'post':'create',
+})
+
+
+    
